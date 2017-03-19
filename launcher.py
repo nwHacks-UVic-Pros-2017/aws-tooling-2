@@ -1,34 +1,40 @@
 import boto3
+from pathlib import Path
+from click import command, option
+from os import system
 
-def main():
+@command()
+@option("--commit_file_path", help="Path for the commit file produced by codecommit.py")
+def main(commit_file_path):
+
+
+	#TODO: Check for existence of file
+
+	print("Before running this script, ensure that you have the latest revision of the mojio-amazon repository from github.\n")
 
 	bean_client = boto3.client('elasticbeanstalk')
-	code_client = boto3.client('codecommit')
+
+	with open(commit_file_path, 'r') as f:
+		commit_id = f.readline()
 
 
+	#SourceLocate = str('mojio-amazon/' + commit_id).strip('\n').strip('\t')
 
-	repo_info = code_client.get_repository(
-   		repositoryName='mojio-amazon'
-	)
+	#print(SourceLocate)
 
-	print(repo_info)
-
-
-
+		
 	response = bean_client.create_application_version(
-    	ApplicationName='my-app',
-    	AutoCreateApplication=True,
-    	Description='my-app-v1',
-    	Process=True,
-    	SourceBuildInformation={
-        	'SourceType': 'Git',
-        	'SourceRepository': 'CodeCommit',
-        	'SourceLocation': 'mojio-amazon'
-    	},
-		VersionLabel='v1',
+    ApplicationName='mojio-test',
+    VersionLabel='v0.1.1_3',
+    Description='app',
+	Process=True,
+	AutoCreateApplication=True,
+    SourceBuildInformation={
+        'SourceType': 'Git',
+        'SourceRepository': 'CodeCommit',
+        'SourceLocation': 'mojio-amazon/c0d215f442dc33829682850a8e53b7283d5564b5'
+    }
 	)
-
-	print(response)
 
 
 if __name__ == "__main__":

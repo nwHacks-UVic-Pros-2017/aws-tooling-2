@@ -33,6 +33,10 @@ def main(reponame):
 			system(git_action_str)	
 
 			chdir(temp_dir)	
+			
+			#Hack to get the latest commit from git log. Not pretty, but it
+			# works
+			system("git log | head -n 1 | tail -c 41 > ../latestcommit.txt")
 
 			system(aws_codecommit_action_str)	
 			exit(0)
