@@ -23,20 +23,21 @@ def main(commit_file_path, version_label):
 
 	print(SourceLocate)
 
-		
-	response = bean_client.create_application_version(
-    ApplicationName='mojio-test',
-    VersionLabel='{0}'.format(version_label),
-    Description='app',
-	Process=True,
-	AutoCreateApplication=True,
-    SourceBuildInformation={
-        'SourceType': 'Git',
-        'SourceRepository': 'CodeCommit',
-        'SourceLocation': '{0}'.format(SourceLocate)#'mojio-amazon/c0d215f442dc33829682850a8e53b7283d5564b5'
-    }
-	)
-
+	try:	
+		response = bean_client.create_application_version(
+    	ApplicationName='mojio-test',
+    	VersionLabel='{0}'.format(version_label),
+    	Description='app',
+		Process=True,
+		AutoCreateApplication=True,
+    	SourceBuildInformation={
+        	'SourceType': 'Git',
+        	'SourceRepository': 'CodeCommit',
+        	'SourceLocation': '{0}'.format(SourceLocate)
+    	}
+		)
+	except Exception as err:
+		print("error: {0}".format(err))
 
 if __name__ == "__main__":
 	main()
