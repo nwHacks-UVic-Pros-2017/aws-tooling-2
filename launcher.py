@@ -5,7 +5,8 @@ from os import system
 
 @command()
 @option("--commit_file_path", help="Path for the commit file produced by codecommit.py")
-def main(commit_file_path):
+@option("--version_label", help="version label")
+def main(commit_file_path, version_label):
 
 
 	#TODO: Check for existence of file
@@ -18,21 +19,21 @@ def main(commit_file_path):
 		commit_id = f.readline()
 
 
-	#SourceLocate = str('mojio-amazon/' + commit_id).strip('\n').strip('\t')
+	SourceLocate = str('mojio-amazon/' + commit_id).strip('\n').strip('\t')
 
-	#print(SourceLocate)
+	print(SourceLocate)
 
 		
 	response = bean_client.create_application_version(
     ApplicationName='mojio-test',
-    VersionLabel='v0.1.1_3',
+    VersionLabel='{0}'.format(version_label),
     Description='app',
 	Process=True,
 	AutoCreateApplication=True,
     SourceBuildInformation={
         'SourceType': 'Git',
         'SourceRepository': 'CodeCommit',
-        'SourceLocation': 'mojio-amazon/c0d215f442dc33829682850a8e53b7283d5564b5'
+        'SourceLocation': '{0}'.format(SourceLocate)#'mojio-amazon/c0d215f442dc33829682850a8e53b7283d5564b5'
     }
 	)
 
